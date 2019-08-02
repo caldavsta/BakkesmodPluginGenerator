@@ -22,7 +22,7 @@ rocket_league_folder = r"D:\SteamLibrary\steamapps\common\rocketleague"
 # STEP 3: Your plugin name.
 #   • Replace the name below with your plugin name (No Spaces!!)
 #
-plugin_name = "MyAwesomePlugin"
+plugin_name = "BlueprintPlugin"
 #
 # STEP 4: Your python path
 #   • This is the thing you type in a command prompt to run python
@@ -36,20 +36,22 @@ python_command = "python"
 #   • The path should point to the folder with "include" and "lib" folders
 #
 alternate_bakkesmod_sdk_directory = ""
+#
 #######################
 
 colorama.init()
 class BlueprintProperties:
-    def __init__(self, project_name, rocketleague_folder, bakkesmod_sdk_directory):
+    def __init__(self, project_name, rocketleague_folder, bakkesmod_sdk_directory, python_command):
         self.name = project_name
         self.sdk_dir = bakkesmod_sdk_directory
         self.rl_dir = rocketleague_folder
+        self.python =  python_command
     
 class PluginProperties:
-    def __init__(self, plugin_name, rocketleague_folder, bakkesmod_sdk_directory):
+    def __init__(self, plugin_name, rocketleague_folder, python_command):
         self.name = plugin_name
-        self.sdk_dir = bakkesmod_sdk_directory
         self.rl_dir = rocketleague_folder
+        self.python =  python_command
 
 def replace_all_occurrances_in_files(root_path, file_list, 
                                      text_to_search, replacement_text):
@@ -70,7 +72,7 @@ def replace_all_occurrances_in_files(root_path, file_list,
     print(Fore.GREEN + str(num_of_changes) +  " changes made in " + str(num_of_files_changed) + " files.")
     print(Style.RESET_ALL) 
 
-def replace_in_file(root_path, file_name, text_to_search, text_to_replace):
+def replace_in_file(root_path, file_name, text_to_search, replacement_text):
     num_of_changes = 0
     num_of_files_changed = 0
     path_to_file = root_path.joinpath(file_name)
@@ -85,11 +87,19 @@ def replace_in_file(root_path, file_name, text_to_search, text_to_replace):
     print(Fore.GREEN + str(num_of_changes) +  " changes made in " + str(num_of_files_changed) + " files.")
     print(Style.RESET_ALL) 
 
+def rename_all_files_matching(folder_path, text_to_search, replacement_text):
+    for file_name in os.listdir(folder_path): 
+        if (file_name.count(text_to_search) > 0):
+            print (file_name)
+            file_to_rename = folder_path.joinpath(file_name)
+            #folder_path.rename(replacement_text)
+
 error_list = []
 data_folder = Path(os.getcwd())
-bakkes_patch_plugin_name = "bakkes_patchplugin.py"
-pp = PluginProperties(plugin_name, rocket_league_folder, alternate_bakkesmod_sdk_directory)
-bp = BlueprintProperties("SpeedometerPlugin", "D:\\SteamLibrary\\steamapps\\common\\rocketleague", r"C:\Users\Caleb\VisualStudioProjects\BakkesModSDK")
+bakkes_patch_file_name = "bakkes_patchplugin.py"
+pp = PluginProperties(plugin_name, rocket_league_folder, python_command)
+bp = BlueprintProperties("SpeedometerPlugin", r"D:\SteamLibrary\steamapps\common\rocketleague", r"C:\Users\Caleb\VisualStudioProjects\BakkesModSDK", "python")
+
 files_to_replace = [data_folder.joinpath(bp.name).joinpath(bp.name + ".sln"), 
                     data_folder.joinpath(bp.name).joinpath(bp.name).
                     joinpath(bp.name + ".cpp"),
@@ -100,8 +110,28 @@ files_to_replace = [data_folder.joinpath(bp.name).joinpath(bp.name + ".sln"),
                     data_folder.joinpath(bp.name).joinpath(bp.name).
                     joinpath(bp.name + ".vcxproj.filters")]
 
-#replace_all_occurrances_in_files(data_folder, files_to_replace, bp.name, pp.name)
-replace_in_file_(bakkes_patch_script_path, bakkes_patch_plugin_name, bp.sdk_dir, pp.sdk_dir)
+#replace code file text
+##replace_all_occurrances_in_files(data_folder, files_to_replace, bp.name, pp.name)
+
+#replace the line in the bakkes patch python script
+##replace_in_file(data_folder.joinpath(bp.name).joinpath(bp.name), bakkes_patch_file_name, bp.rl_dir, pp.rl_dir)
+
+
+#replace the line in the bakkes patch python script
+##replace_in_file(data_folder.joinpath(bp.name).joinpath(bp.name), bakkes_patch_file_name, bp.rl_dir, pp.rl_dir)
+
+#replace include and lib reference in .vcxproj file
+##if (alternate_bakkesmod_sdk_directory != ""):
+##    replace_in_file(data_folder.joinpath(bp.name).joinpath(bp.name), bp.name + ".vcxproj", bp.sdk_dir, alternate_bakkesmod_sdk_directory)
+##else:
+##    replace_in_file(data_folder.joinpath(bp.name).joinpath(bp.name), bp.name + ".vcxproj", bp.sdk_dir, pp.rl_dir + r"\Win32\bakkesmod\bakkesmodsdk")
+
+#replace <Command>python in vcxproj file
+##replace_in_file(data_folder.joinpath(bp.name).joinpath(bp.name), bp.name + ".vcxproj", bp.python, pp.python)
+
+
+#rename all the files and the folder
+rename_all_files_matching(data_folder.joinpath(bp.name).joinpath(bp.name), bp.name, pp.name)
 if (len(error_list) > 0):
     print(Back.WHITE + Fore.RED + "\nThe operation completed with errors:");
     for index in range(len(error_list)):
