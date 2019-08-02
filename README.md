@@ -18,3 +18,6 @@ python bakkesmodplugingenerator.py
 5. Delete BakkesmodPluginGenerator.py
 
 Don't run the generator more than once. If you change your mind about your plugin configuration, delete the whole thing and start from step 1
+
+# Credit
+The bakkes_patchplugin.py file is the same as the one included in the bakkesmodsdk but I included it here so that the script won't interfere with your existing bakkesmod SDK files.
