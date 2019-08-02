@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29102.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "BakkesmodPluginGenerator", "BakkesmodPluginGenerator.pyproj", "{CC1C8DB9-2048-4557-98B8-7A578AC7AD9B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC1C8DB9-2048-4557-98B8-7A578AC7AD9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC1C8DB9-2048-4557-98B8-7A578AC7AD9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3E80D527-D73D-484A-A323-2DFD65D47019}
+	EndGlobalSection
+EndGlobal
