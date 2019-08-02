@@ -88,11 +88,15 @@ def replace_in_file(root_path, file_name, text_to_search, replacement_text):
     print(Style.RESET_ALL) 
 
 def rename_all_files_matching(folder_path, text_to_search, replacement_text):
+    num_of_files_changed = 0
     for file_name in os.listdir(folder_path): 
         if (file_name.count(text_to_search) > 0):
-            print (file_name)
             file_to_rename = folder_path.joinpath(file_name)
-            #folder_path.rename(replacement_text)
+            new_name = file_to_rename.name.replace(text_to_search, replacement_text)
+            file_to_rename.rename(folder_path.joinpath(new_name))
+            num_of_files_changed += 1
+    print(str(num_of_files_changed) + " files renamed");
+
 
 error_list = []
 data_folder = Path(os.getcwd())
@@ -100,38 +104,36 @@ bakkes_patch_file_name = "bakkes_patchplugin.py"
 pp = PluginProperties(plugin_name, rocket_league_folder, python_command)
 bp = BlueprintProperties("SpeedometerPlugin", r"D:\SteamLibrary\steamapps\common\rocketleague", r"C:\Users\Caleb\VisualStudioProjects\BakkesModSDK", "python")
 
-files_to_replace = [data_folder.joinpath(bp.name).joinpath(bp.name + ".sln"), 
-                    data_folder.joinpath(bp.name).joinpath(bp.name).
-                    joinpath(bp.name + ".cpp"),
-                    data_folder.joinpath(bp.name).joinpath(bp.name).
-                    joinpath(bp.name + ".h"),
-                    data_folder.joinpath(bp.name).joinpath(bp.name).
-                    joinpath(bp.name + ".vcxproj"),
-                    data_folder.joinpath(bp.name).joinpath(bp.name).
-                    joinpath(bp.name + ".vcxproj.filters")]
+files_to_replace = [data_folder.joinpath(bp.name + ".sln"), 
+                    data_folder.joinpath(bp.name).joinpath(bp.name + ".cpp"),
+                    data_folder.joinpath(bp.name).joinpath(bp.name + ".h"),
+                    data_folder.joinpath(bp.name).joinpath(bp.name + ".vcxproj"),
+                    data_folder.joinpath(bp.name).joinpath(bp.name + ".vcxproj.filters")]
 
 #replace code file text
-##replace_all_occurrances_in_files(data_folder, files_to_replace, bp.name, pp.name)
+replace_all_occurrances_in_files(data_folder.joinpath(bp.name), files_to_replace, bp.name, pp.name)
 
 #replace the line in the bakkes patch python script
-##replace_in_file(data_folder.joinpath(bp.name).joinpath(bp.name), bakkes_patch_file_name, bp.rl_dir, pp.rl_dir)
-
+replace_in_file(data_folder.joinpath(bp.name), bakkes_patch_file_name, bp.rl_dir, pp.rl_dir)
 
 #replace the line in the bakkes patch python script
-##replace_in_file(data_folder.joinpath(bp.name).joinpath(bp.name), bakkes_patch_file_name, bp.rl_dir, pp.rl_dir)
+replace_in_file(data_folder.joinpath(bp.name), bakkes_patch_file_name, bp.rl_dir, pp.rl_dir)
 
 #replace include and lib reference in .vcxproj file
-##if (alternate_bakkesmod_sdk_directory != ""):
-##    replace_in_file(data_folder.joinpath(bp.name).joinpath(bp.name), bp.name + ".vcxproj", bp.sdk_dir, alternate_bakkesmod_sdk_directory)
-##else:
-##    replace_in_file(data_folder.joinpath(bp.name).joinpath(bp.name), bp.name + ".vcxproj", bp.sdk_dir, pp.rl_dir + r"\Win32\bakkesmod\bakkesmodsdk")
+if (alternate_bakkesmod_sdk_directory != ""):
+    replace_in_file(data_folder.joinpath(bp.name), bp.name + ".vcxproj", bp.sdk_dir, alternate_bakkesmod_sdk_directory)
+else:
+    replace_in_file(data_folder.joinpath(bp.name), bp.name + ".vcxproj", bp.sdk_dir, pp.rl_dir + r"\Binaries\Win32\bakkesmod\bakkesmodsdk")
 
 #replace <Command>python in vcxproj file
-##replace_in_file(data_folder.joinpath(bp.name).joinpath(bp.name), bp.name + ".vcxproj", bp.python, pp.python)
-
+replace_in_file(data_folder.joinpath(bp.name), bp.name + ".vcxproj", bp.python, pp.python)
 
 #rename all the files and the folder
-rename_all_files_matching(data_folder.joinpath(bp.name).joinpath(bp.name), bp.name, pp.name)
+rename_all_files_matching(data_folder.joinpath(bp.name), bp.name, pp.name)
+rename_all_files_matching(data_folder, bp.name, pp.name)
+
+
+
 if (len(error_list) > 0):
     print(Back.WHITE + Fore.RED + "\nThe operation completed with errors:");
     for index in range(len(error_list)):
