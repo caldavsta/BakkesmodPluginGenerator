@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 import fileinput
 from pathlib import Path
 import os
@@ -102,7 +102,7 @@ error_list = []
 data_folder = Path(os.getcwd())
 bakkes_patch_file_name = "bakkes_patchplugin.py"
 pp = PluginProperties(plugin_name, rocket_league_folder, python_command)
-bp = BlueprintProperties("SpeedometerPlugin", r"D:\SteamLibrary\steamapps\common\rocketleague", r"C:\Users\Caleb\VisualStudioProjects\BakkesModSDK", "python")
+bp = BlueprintProperties("BlueprintPlugin", r"D:\SteamLibrary\steamapps\common\rocketleague", r"C:\Users\Caleb\VisualStudioProjects\BakkesModSDK", "python")
 
 files_to_replace = [data_folder.joinpath(bp.name + ".sln"), 
                     data_folder.joinpath(bp.name).joinpath(bp.name + ".cpp"),
